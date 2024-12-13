@@ -1,0 +1,328 @@
+---
+title: "Weekly Report"
+author: "Amjad"
+date: "2024-12-13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+
+
+# Pangenome MetaData
+## Collected the genome/assembly fasta files from 9 Pangenome Research articles
+## The files are also available on server and drive
+## The path for server is   /share/org/CAAS/caas_gaos/Amjad/Pangenome
+## Now coleecting the genotype and accessions from related pangenome articles
+## Also doing data visualization practice on R from tutorials
+
+```{r}
+```
+
+
+# Practicing on Data Visualization of Paired Gene Project
+
+```{r}
+library(readxl)
+data <- read.csv("D:/1-Research/Research/3-Paired Gene Research/Research Article/all_species_pair_gene_info.h2h_identified_thresh0.5.binary_label_0.5_0.csv")
+options(warn = -1)
+library(dplyr)
+effobs_thresh <- function(DATA, SPECIES, RATIO = 0.5){
+  data %>% 
+    filter(species == SPECIES) %>% 
+    .$eff_obs %>% 
+    max() %>% 
+    `*` (RATIO) %>% 
+    round() -> value
+  return(value)
+}
+
+
+library(ggplot2)
+plot_dist_coexp <- function(SPECIES, EFF_OBS=100){
+  data %>% 
+  filter(species == SPECIES) %>% 
+  filter(eff_obs > EFF_OBS) %>% 
+  ggplot(., aes(x=distance, y=cor_log, color = cor_log)) + 
+    geom_point(size=1, alpha = 0.5) +
+    geom_density_2d(color = 'black') +
+    scale_x_log10() +
+    scale_color_gradient(low = "#69b3a2", high = "#d73027") +
+    ggtitle(SPECIES) +
+    labs(x = 'Interval Distance (bp)', y='Coexpression Level (PCC)', color = 'PCC') +
+    theme_classic() +
+    theme(
+        plot.title = element_text(hjust = 0.5, size = 16),
+        axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+        axis.title.y = element_text(size = 14, margin = margin(r = 5)),
+        axis.line = element_line(size = 0.8), 
+        axis.ticks = element_line(size = 1),  # 设置刻度线的粗细
+        axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12),
+        legend.position.inside = c(0.15, 0.3),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.direction = "vertical",
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 12))
+}
+
+```
+
+
+```{r}
+
+options(repr.plot.height = 4, repr.plot.width = 16)
+THRESH = 0.5
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p1 <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p2 <- plot_dist_coexp('Rice', rice_effobs)
+p3 <- plot_dist_coexp('Maize',maize_effobs)
+p4 <- plot_dist_coexp('Wheat', wheat_effobs)
+
+```
+
+```{r}
+p1
+```
+
+
+```{r}
+p2
+```
+
+
+```{r}
+p3
+```
+
+
+```{r}
+p4
+```
+
+
+
+
+# Thresh = 0.6
+
+```{r}
+THRESH = 0.6
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p_ath <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p_os <- plot_dist_coexp('Rice', rice_effobs)
+p_zm <- plot_dist_coexp('Maize',maize_effobs)
+p_ta <- plot_dist_coexp('Wheat', wheat_effobs)
+```
+
+
+```{r}
+p_ath
+```
+
+```{r}
+p_os
+```
+
+
+```{r}
+p_zm
+```
+
+
+```{r}
+p_ta
+```
+
+
+
+
+# Thresh = 0.7
+
+
+```{r}
+THRESH = 0.7
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p_at1 <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p_os1 <- plot_dist_coexp('Rice', rice_effobs)
+p_zm1 <- plot_dist_coexp('Maize',maize_effobs)
+p_ta1 <- plot_dist_coexp('Wheat', wheat_effobs)
+```
+
+```{r}
+p_at1
+```
+
+```{r}
+p_os1
+```
+
+```{r}
+p_zm1
+```
+
+```{r}
+p_ta1
+```
+
+
+# Thresh = 0.8
+
+```{r}
+THRESH = 0.8
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p_at2 <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p_os2 <- plot_dist_coexp('Rice', rice_effobs)
+p_zm2 <- plot_dist_coexp('Maize',maize_effobs)
+p_ta2 <- plot_dist_coexp('Wheat', wheat_effobs)
+
+```
+
+
+```{r}
+p_at2
+```
+
+```{r}
+p_os2
+```
+
+```{r}
+p_zm2
+```
+
+```{r}
+p_ta2
+```
+
+
+# Thresh = 0.9
+
+
+```{r}
+THRESH = 0.9
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p_at3 <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p_os3 <- plot_dist_coexp('Rice', rice_effobs)
+p_zm3 <- plot_dist_coexp('Maize',maize_effobs)
+p_ta3 <- plot_dist_coexp('Wheat', wheat_effobs)
+```
+
+```{r}
+p_at3
+```
+
+```{r}
+p_os3
+```
+
+```{r}
+p_zm3
+```
+
+```{r}
+p_ta3
+
+```
+
+
+
+# Thresh = 0.95
+
+```{r}
+THRESH = 0.95
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p_at4 <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p_os4 <- plot_dist_coexp('Rice', rice_effobs)
+p_zm4 <- plot_dist_coexp('Maize',maize_effobs)
+p_ta4 <- plot_dist_coexp('Wheat', wheat_effobs)
+```
+
+
+```{r}
+p_at4
+```
+
+```{r}
+p_os4
+```
+
+```{r}
+p_zm4
+```
+
+
+```{r}
+p_ta4
+```
+
+
+
+
+# Thresh = 0.01
+
+```{r}
+THRESH = 0.01
+
+ath_effobs <- effobs_thresh(data, 'Arabidopsis', THRESH)
+rice_effobs <- effobs_thresh(data, 'Rice', THRESH)
+maize_effobs <- effobs_thresh(data, 'Maize', THRESH)
+wheat_effobs <- effobs_thresh(data, 'Wheat', THRESH)
+
+p_at5 <- plot_dist_coexp('Arabidopsis', ath_effobs)
+p_os5 <- plot_dist_coexp('Rice', rice_effobs)
+p_zm5 <- plot_dist_coexp('Maize',maize_effobs)
+p_ta5 <- plot_dist_coexp('Wheat', wheat_effobs)
+```
+
+```{r}
+p_at5
+```
+
+```{r}
+p_os5
+```
+
+```{r}
+p_zm5
+```
+
+```{r}
+p_ta5
+```
+
+
+
+
+
